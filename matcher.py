@@ -17,32 +17,35 @@
 def isMatch(strMatch, *brackets):
     isCorrect = True
     for ch in strMatch:
-        
-
-
-    print(strMatch)
+       print(strMatch)
     print(*brackets)
 
-def formBrackets(brList):
-    for ch in bracketsList:
+def formBrackets(closeList):
+    closeList = []
+    for ch in openList:
         if ch == "(":
-            brList.append(")")
+            closeList.append(")")
         elif ch == "{":
-            brList.append("}")
+            closeList.append("}")
         elif ch == "[":
-            brList.append("]")
+            closeList.append("]")
         elif ch == "<":
-            brList.append(">")
-    brList.sort()
-    print(brList)
+            closeList.append(">")
+    #brList.sort()
+    #print(closeList)
+    return closeList
 
+parseList = []
 
 #stringForMatch = input("Введите строку для проверки: ")
 brackets = input("Введите набор открывающихся скобок ([{<: ")
-bracketsList = list(brackets)
-#print(bracketsList)
+openList = list(brackets)
+
+#
 #for i in range(len(bracketsList)):
 #    print(ord(bracketsList[i]))
     #print(bracketsList[i])
-formBrackets(bracketsList)
+print(openList)
+closeList = formBrackets(openList)
+print(closeList)
 
