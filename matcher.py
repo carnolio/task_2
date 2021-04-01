@@ -54,11 +54,14 @@ def isMatch(strMatch, openBr, closeBr):
             op += 1
         if ch in closeBr:
             cl += 1
-    if op == 0 or cl == 0:
+    if op == 0 and cl == 0:
+        isCorrect = False
+        res = "{}, None, None".format(isCorrect)
+        return res
+    elif op == 0 or cl == 0:
         isCorrect = False
         res = "{}, ('{}',{}), None".format(isCorrect, stack[0], positions[0])
         return res
-
 #поудаляли парные скобки
     n2 = len(stack)*2
     for k in range(n2+1):
