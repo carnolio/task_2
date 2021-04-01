@@ -1,19 +1,14 @@
-#Нам даны строки, содержащие скобки 4 видов - круглые (), квадратные [], фигурные {} и угловые <>.
-#Напишите функцию, которая проверяет, является ли последовательность скобок корректной:
-#любая открывающая скобка должна иметь закрывающую того же типа где-то дальше по строке;
-#пары скобок не должны пересекаться, хотя они могут быть вложенными.
+# Нам даны строки, содержащие скобки 4 видов - круглые (), квадратные [], фигурные {} и угловые <>.
+# Напишите функцию, которая проверяет, является ли последовательность скобок корректной:
+# любая открывающая скобка должна иметь закрывающую того же типа где-то дальше по строке;
+# пары скобок не должны пересекаться, хотя они могут быть вложенными.
 
-#Входные данные:
-#строка для проверки;
-#список скобок, которые нужно проверять.
+# Выходные данные:
+# 3 значения:
+# Флаг корректности строки (True или False);
+# Пару из символа и индекса в строке — скобка, на которой обнаружена ошибка;
+# Пару из символа и индекса в строке — скобка, для которой не удалось найти закрывающую.
 
-#Выходные данные:
-#3 значения:
-#Флаг корректности строки (True или False);
-#Пару из символа и индекса в строке — скобка, на которой обнаружена ошибка;
-#Пару из символа и индекса в строке — скобка, для которой не удалось найти закрывающую.
-#40 91 123 60 ([{<
-#41 93 125 62 )]}>
 def formBrackets(openList):
     closeList = []
     for ch in openList:
@@ -25,59 +20,70 @@ def formBrackets(openList):
             closeList.append("]")
         elif ch == "<":
             closeList.append(">")
-    #brList.sort()
-    #print(closeList)
     return closeList
+
 
 def isMatch(strMatch, openBr, closeBr):
     isCorrect = False
     firstIsOpen = False
-    print(strMatch)
+    #print(strMatch)
     stack = []
     positions = []
-    depth = 0
 
-    #отбросили лишнее оставили только скобки и запомнили номера в строке
+    # отбросили лишнее оставили только скобки и запомнили номера в строке
     for i in range(len(strMatch)):
         if (strMatch[i] in openBr) or (strMatch[i] in closeBr):
-           stack.append(strMatch[i])
-           positions.append(i)
-    #промежуточные итоги
-    print(stack)
-    print(positions)
+            stack.append(strMatch[i])
+            positions.append(i)
 
-    n=0
-    lenStack = len(stack)
-    while stack !="" or n < lenStack:
+    #промежуточные итоги
+    #print(stack)
+    #print(positions)
+    lenStack=len(stack)
+
+#поудаляли парные скобки
+    n2 = len(stack)*2
+    for k in range(n2+1):
         for i in range(lenStack):
             for j in range(len(openBr)):
-                if (i+1) <= len(stack) and stack[i] in openBr and stack[i+1] in closeBr:
-                    if (stack[i]==openBr[j]) and (stack[i+1]==closeBr[j]):
+                if (i + 1) <= len(stack) and stack[i] in openBr and stack[i + 1] in closeBr:
+                    if (stack[i] == openBr[j]) and (stack[i + 1] == closeBr[j]):
                         stack.pop(i)
                         stack.pop(i)
                         positions.pop(i)
                         positions.pop(i)
-                        n+=2
-                        print(stack)
-                        print(positions)
-        print(i)
-    return isCorrect
 
+    #если скобок нет значит все хорошо
+    if len(stack) == 0:
+        isCorrect = True
+        res="{}, None, None".format(isCorrect)
+        return res
+    else:
+        isCorrect = False
+        # если четное количество скобок
+        if len(stack) % 2 == 0:
+            for i in range(lenStack):
+                if (i + 1) <= len(stack) and stack[i] in openBr and stack[i + 1] in closeBr:
+                    res = "{}, ('{}',{}), ('{}',{})".format(isCorrect, stack[i+1],positions[i+1],stack[i], positions[i])
+        # если количество скобок нечетное
+        else:
+            #Если одинокая скобка закрывающаяся
+            if stack[len(stack)//2] in closeBr:
+                res = "{}, ('{}',{}), None".format(isCorrect, stack[len(stack)//2],positions[len(stack)//2])
+            #Если одинокая скобка открывающаяся
+            else:
+                res = "{}, None,('{}',{})".format(isCorrect, stack[len(stack)//2],positions[len(stack)//2])
+        return res
 
-parseList = []
-#stringForMatch = input("Введите строку для проверки: ")
+stringForMatch = input("Введите строку для проверки: ")
 #stringForMatch = "(a+[b*c]-{d/3})"
-stringForMatch = "(a+[b*c)-17]"
-#brackets = input("Введите набор открывающихся скобок ([{<: ")
-brackets = "(["
+#stringForMatch = "(a+[b*c)-17]"
+#stringForMatch = "(a+]b*c)-17"
+
+brackets = input("Введите набор открывающихся скобок ([{<: ")
+#brackets = "(["
 openList = list(brackets)
 
-#
-#for i in range(len(bracketsList)):
-#    print(ord(bracketsList[i]))
-    #print(bracketsList[i])
-
 closeList = formBrackets(openList)
-print(openList)
-print(closeList)
-isMatch(stringForMatch,openList,closeList)
+isMatch(stringForMatch, openList, closeList)
+print(isMatch(stringForMatch, openList, closeList))
