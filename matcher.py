@@ -40,6 +40,24 @@ def isMatch(strMatch, openBr, closeBr):
     #print(stack)
     #print(positions)
     lenStack=len(stack)
+    #вырожденные случаи
+    #Если только одна скобка
+    if lenStack == 1:
+        isCorrect = False
+        res = "{}, ('{}',{}), None".format(isCorrect, stack[0], positions[0])
+        return res
+    #Если только открытые или только закрытые
+    op=0
+    cl=0
+    for ch in stack:
+        if ch in openBr:
+            op += 1
+        if ch in closeBr:
+            cl += 1
+    if op == 0 or cl == 0:
+        isCorrect = False
+        res = "{}, ('{}',{}), None".format(isCorrect, stack[0], positions[0])
+        return res
 
 #поудаляли парные скобки
     n2 = len(stack)*2
